@@ -1,0 +1,124 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/nf-core/testpipeline/master/nextflow_schema.json",
+    "title": "nexomis/primary pipeline parameters",
+    "description": "Perform primary Analysis",
+    "type": "object",
+    "defs": {
+        "input_output_options": {
+            "title": "Input/output options",
+            "type": "object",
+            "description": "Define where the pipeline should find input data and save output data.",
+            "required": ["input_dir", "output_dir"],
+            "properties": {
+                "input_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true, 
+                    "description": "The input directory with sequence files. Spring files will be decompressed."
+                },
+                "output_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure."
+                },
+                "save_fastp": {
+                    "type": "boolean",
+                    "description": "Save fastp trimmed fastq.",
+                    "default": true
+                },
+                "publish_dir_mode": {
+                    "type": "string",
+                    "description": "PublishDir mode for process",
+                    "default": "link"
+                }
+            }
+        },
+        "fastp_options": {
+            "title": "fastp options",
+            "type": "object",
+            "description": "Options for the fastp software.",
+            "properties": {
+                "trim_poly_g": {
+                    "type": "boolean",
+                    "description": "Enable polyG tail trimming.",
+                    "default": true
+                },
+                "trim_poly_x": {
+                    "type": "boolean",
+                    "description": "Enable polyX tail trimming.",
+                    "default": true
+                },
+                "min_avg_qual": {
+                    "type": "integer",
+                    "description": "Minimum average quality to keep a read.",
+                    "default": 28
+                },
+                "min_len": {
+                    "type": "integer",
+                    "description": "Minimum length to keep a read.",
+                    "default": 41
+                },
+                "cut_right_window_size": {
+                    "type": "integer",
+                    "description": "The window size for sliding window trimming on the right.",
+                    "default": 4
+                },
+                "cut_right_mean_qual": {
+                    "type": "integer",
+                    "description": "The mean quality requirement for sliding window trimming on the right.",
+                    "default": 20
+                },
+                "cut_tail_window_size": {
+                    "type": "integer",
+                    "description": "The window size for sliding window trimming on the tail.",
+                    "default": 4
+                },
+                "cut_tail_mean_qual": {
+                    "type": "integer",
+                    "description": "The mean quality requirement for sliding window trimming on the tail.",
+                    "default": 25
+                },
+                "keep_trimmed": {
+                    "type": "boolean",
+                    "description": "Keep trimmed reads.",
+                    "default": true
+                }
+            }
+        },
+        "resources_options": {
+            "title": "Resources options",
+            "type": "object",
+            "description": "Define The default resources for nextflow",
+            "required": ["input_dir", "output_dir"],
+            "properties": {
+                "ncpus_low": {
+                    "type": "integer",
+                    "default": 4,
+                    "description": "Number of cpu for low process."
+                },
+                "ncpus_med": {
+                    "type": "integer",
+                    "default": 8,
+                    "description": "Number of cpu for medium process."
+                },
+                "ncpus_high": {
+                    "type": "integer",
+                    "default": 16,
+                    "description": "Number of cpu for high process."
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/defs/input_output_options"
+        },
+        {
+            "$ref": "#/defs/fastp_options"
+        },
+        {
+            "$ref": "#/defs/resources_options"
+        }
+    ]
+}
