@@ -15,7 +15,7 @@
                     "type": "string",
                     "format": "directory-path",
                     "exists": true, 
-                    "description": "The input directory with sequence files. Spring files will be decompressed."
+                    "description": "The input directory with sequence files. Spring files will be decompressed. If given, sample_sheet is ignored."
                 },
                 "output_dir": {
                     "type": "string",
