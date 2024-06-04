@@ -28,20 +28,13 @@ workflow {
 
   inputDir = Channel.fromPath(params.input_dir, type: 'dir')
 
-  fastpParameters = Channel.value([
-    params.trim_poly_g,
-    params.cut_right_window_size,
-    params.cut_right_mean_qual,
-    params.cut_tail_window_size,
-    params.cut_tail_mean_qual,
-    params.min_avg_qual,
-    params.trim_poly_x,
-    params.min_len
-  ])
+  Channel.fromPath(params.kraken2_db, type: "dir")
+  | collect
+  | set {dbPathKraken2}
 
   PRIMARY(
     inputDir,
-    fastpParameters
+    dbPathKraken2
   )
 
 }

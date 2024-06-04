@@ -86,6 +86,20 @@
                 }
             }
         },
+        "kraken2_options": {
+            "title": "Kraken2 options",
+            "type": "object",
+            "description": "Options for Kraken2",
+            "required": ["kraken2_db"],
+            "properties": {
+                "kraken2_db": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "exists": true, 
+                    "description": "Kraken2 index as a directory"
+                }
+            }
+        },
         "resources_options": {
             "title": "Resources options",
             "type": "object",
