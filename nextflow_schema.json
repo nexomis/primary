@@ -78,11 +78,6 @@
                     "type": "integer",
                     "description": "The mean quality requirement for sliding window trimming on the tail.",
                     "default": 25
-                },
-                "keep_trimmed": {
-                    "type": "boolean",
-                    "description": "Keep trimmed reads.",
-                    "default": true
                 }
             }
         },
