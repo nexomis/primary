@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
-
-include { validateParameters; paramsHelp; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
+nextflow.preview.output = true
+include { validateParameters; paramsHelp; paramsSummaryLog } from 'plugin/nf-validation'
 
 log.info """
     |            #################################################
@@ -19,22 +19,41 @@ if (params.help) {
   log.info paramsHelp("nextflow run nexomis/primary --input_dir /path/to/fastq/dir --output_dir /path/to/out/dir")
   exit 0
 }
+
 validateParameters()
 log.info paramsSummaryLog(workflow)
 
-include {PRIMARY} from './modules/subworkflows/primary/main.nf'
+include {PRIMARY_FROM_DIR} from './modules/subworkflows/primary/from_dir/main.nf'
 
 workflow {
 
-  inputDir = Channel.fromPath(params.input_dir, type: 'dir')
+  inputDir = Channel.fromPath(params.in_dir, type: 'dir')
+
+  numReads = Channel.value(params.num_reads)
 
   Channel.fromPath(params.kraken2_db, type: "dir")
+  | map {[["id": "kraken_db"], it]}
   | collect
   | set {dbPathKraken2}
 
-  PRIMARY(
+  PRIMARY_FROM_DIR(
     inputDir,
-    dbPathKraken2
+    dbPathKraken2,
+    numReads
   )
 
+  publish:
+  PRIMARY_FROM_DIR.out.trimmed >> 'fastp'
+  PRIMARY_FROM_DIR.out.fastqc_trim_html >> 'fastqc_trim'
+  PRIMARY_FROM_DIR.out.fastqc_raw_html >> 'fastqc_raw'
+  PRIMARY_FROM_DIR.out.multiqc_html >> 'multiqc'
+
+}
+
+output {
+    directory "${params.out_dir}"
+    mode params.publish_dir_mode
+    'fastp' {
+        enabled params.save_fastp
+    }
 }
