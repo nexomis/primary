@@ -1,0 +1,4 @@
+id,R1,R2
+s1,data/test/input_dir/s_1_R1.fastq.gz,data/test/input_dir/s_1_R2.fastq.gz
+s3,data/test/input_dir/s3.spring,
+s4,data/test/input_dir/s4.spring,

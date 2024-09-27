@@ -9,13 +9,31 @@
             "title": "Input/output options",
             "type": "object",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["in_dir", "out_dir"],
+            "oneOf": [
+                {
+                    "required": ["input", "out_dir"],
+                    "not": {"required": ["in_dir"]}
+                },
+                {
+                    "required": ["in_dir", "out_dir"],
+                    "not": {"required": ["input"]}
+                }
+                ],
             "properties": {
                 "in_dir": {
                     "type": "string",
                     "format": "directory-path",
-                    "exists": true, 
-                    "description": "The input directory with sequence files. Spring files will be decompressed. If given, sample_sheet is ignored."
+                    "exists": true,
+                    "description": "Input directory with fastq/spring files"
+
+                },
+                "input": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "text/csv",
+                    "pattern": ".csv$",
+                    "schema": "assets/input.json",
+                    "description": "Input can be either a directory path or a sample sheet defined in assets/input.json"
                 },
                 "out_dir": {
                     "type": "string",
@@ -104,6 +122,12 @@
                     "format": "directory-path",
                     "exists": true, 
                     "description": "Kraken2 index as a directory"
+                }, 
+                "tax_dir": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Path to a custom taxonomy directory for recentrifuge.",
+                    "default": "${projectDir}/data/test/input_dir/rcf_taxdump/taxdump_26092024"
                 }
             }
         },
@@ -141,6 +165,11 @@
                     "type": "integer",
                     "default": 120,
                     "description": "Memory for high process (eg. 'samtools sort', 'bowtie2', ...)."
+                },
+                "kraken2_cpus": {
+                    "type": "integer",
+                    "default": 8,
+                    "description": "Amount of cpus for Kraken2, default is 8"
                 },
                 "kraken2_memory": {
                     "type": "integer",
