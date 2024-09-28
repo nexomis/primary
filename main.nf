@@ -78,7 +78,7 @@ workflow {
 output {
     directory "${params.out_dir}"
     mode params.publish_dir_mode
-    'fastp' {
-        enabled params.save_fastp
+    'trimmed_and_filtered' {
+        enabled = params.trimmed_and_filtered
     }
 }

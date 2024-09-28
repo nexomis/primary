@@ -1,5 +1,5 @@
 input: "data/test/input_dir/samplesheet.csv"
 out_dir: "data/test/out_dir"
 kraken2_db: "data/test/k2_pluspfp_08gb_20240112"
-save_fastp: true
+trimmed_and_filtered: true
 min_len: 30
