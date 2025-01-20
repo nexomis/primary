@@ -11,11 +11,11 @@
             "description": "Define where the pipeline should find input data and save output data.",
             "oneOf": [
                 {
-                    "required": ["input", "out_dir"],
+                    "required": ["input"],
                     "not": {"required": ["in_dir"]}
                 },
                 {
-                    "required": ["in_dir", "out_dir"],
+                    "required": ["in_dir"],
                     "not": {"required": ["input"]}
                 }
                 ],
@@ -35,20 +35,10 @@
                     "schema": "assets/input.json",
                     "description": "Input can be either a directory path or a sample sheet defined in assets/input.json"
                 },
-                "out_dir": {
-                    "type": "string",
-                    "format": "directory-path",
-                    "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure."
-                },
                 "trimmed_and_filtered": {
                     "type": "boolean",
                     "description": "Save fastp trimmed fastq.",
                     "default": true
-                },
-                "publish_dir_mode": {
-                    "type": "string",
-                    "description": "PublishDir mode for process",
-                    "default": "link"
                 }
             }
         },

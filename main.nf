@@ -26,13 +26,13 @@ validateParameters()
 log.info paramsSummaryLog(workflow)
 
 include {PRIMARY} from './modules/subworkflows/primary/main.nf'
-include {PARSE_SEQ_DIR_UNSPRING} from './modules/subworkflows/parse_seq_dir_unspring/main.nf'
+include {PARSE_SEQ_DIR_UNSFQ} from './modules/subworkflows/parse_seq_dir_unsfq/main.nf'
 
 workflow {
 
   if (params.in_dir) {
     inputDir = Channel.fromPath(params.in_dir, type: 'dir')
-    reads = PARSE_SEQ_DIR_UNSPRING(inputDir)
+    reads = PARSE_SEQ_DIR_UNSFQ(inputDir)
   } else {
     reads = Channel.fromSamplesheet("input").map {
       def type = "SR"
@@ -41,8 +41,8 @@ workflow {
         files << file(it[2])
         type = "PE"
       } else {
-        if (it[1].toString().toLowerCase().endsWith("spring")) {
-          type = "spring"
+        if (it[1].toString().toLowerCase().endsWith("sfq")) {
+          type = "sfq"
         }
       }
       meta = [
@@ -76,8 +76,6 @@ workflow {
 }
 
 output {
-    directory "${params.out_dir}"
-    mode params.publish_dir_mode
     'trimmed_and_filtered' {
         enabled = params.trimmed_and_filtered
     }

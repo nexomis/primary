@@ -3,3 +3,5 @@
 /data/test/out_dir
 /.nextflow
 /data/test/k2*
+/out_test
+/pipeline_info
